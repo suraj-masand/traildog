@@ -75,16 +75,16 @@ public class RadarUtils {
             geofence.setLive(jsonObject.getBoolean("live"));
             geofence.setTag(jsonObject.getString("tag"));
             geofence.setExternalId(jsonObject.getString("externalId"));
-            geofence.setDescription(jsonObject.getString("description"));
+            geofence.setDescription(jsonObject.optString("description", "description is empty"));
             geofence.setType(jsonObject.getString("type"));
-            if (geofence.getType() == "circle") {
+            if (geofence.getType().equalsIgnoreCase("circle")) {
                 geofence.setRadius(jsonObject.getInt("geometryRadius"));
             }
 
             JSONObject geometryCenter = jsonObject.getJSONObject("geometryCenter");
             JSONArray coordinates = geometryCenter.getJSONArray("coordinates");
-            geofence.setCenterLongitude(coordinates.getInt(0));
-            geofence.setCenterLatitude(coordinates.getInt(1));
+            geofence.setCenterLongitude(coordinates.getDouble(0));
+            geofence.setCenterLatitude(coordinates.getDouble(1));
             if (jsonObject.has("metadata")) {
                 Map<String, String> metaMap = new HashMap<>();
                 JSONObject metadataJson = jsonObject.getJSONObject("metadata");
@@ -99,6 +99,8 @@ public class RadarUtils {
                 geofence.setMetadata(metaMap);
             }
 
+            geofence.setEnabled(jsonObject.getBoolean("enabled"));
+            geofence.setUserId(jsonObject.optString("userId"));
 
             return geofence;
 
