@@ -12,7 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp">
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -37,11 +40,18 @@
             android:layout_margin="15dp"
             android:text="Login" />
 
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Register"/>
+
         <TextView
             android:id="@+id/textViewLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You do not have an account. Please register to continue"
+            android:text="If you do not have an account. Please register to continue"
             android:textAlignment="center" />
     </LinearLayout>
 

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SigninActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button buttonSignin;
+    private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignin;
@@ -40,8 +41,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         textViewSignin = (TextView) findViewById(R.id.textViewLogin);
         buttonSignin = (Button) findViewById(R.id.buttonSignin);
+        buttonRegister = (Button) findViewById(R.id.buttonRegister);
+
 
         buttonSignin.setOnClickListener(this);
+        buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
 
     }
@@ -84,5 +88,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+
+        
     }
 }
