@@ -13,6 +13,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import io.radar.sdk.model.RadarGeofence;
+import io.radar.sdk.model.RadarGeofenceGeometry;
+import io.radar.sdk.model.RadarCircleGeometry;
+import io.radar.sdk.model.Coordinate;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class RadarAPI {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -64,29 +73,40 @@ public class RadarAPI {
                                                  String tag, String externalId, String description,
                                                  Map<String, String> metadata) throws IOException, PackageManager.NameNotFoundException {
 
-
-
-        String jsonRequest = "{";
-        jsonRequest += "\"description\": \"" + description + "\",\n";
-        jsonRequest += "\"type\": \"circle\",\n";
-        jsonRequest += "\"coordinates\": [" + String.format("%.9f", longitude) + ", " + String.format("%.9f", latitude) + "],\n";
-        jsonRequest += "\"radius\": " + radius + ",\n";
-        jsonRequest += "\"tag\": \"" + tag + "\",\n";
-        jsonRequest += "\"externalId\": \"" + externalId + "\",\n";
-        if (metadata != null && metadata.size() > 0) {
-            jsonRequest += "\"metadata\": {";
-
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                jsonRequest += "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\",\n";
-            }
-            jsonRequest = jsonRequest.substring(0, jsonRequest.length() - 2);
-            jsonRequest += "}\n";
+        JSONObject metadataJson = null;
+        Gson gson = new Gson();
+        try {
+            metadataJson = new JSONObject(gson.toJson(metadata));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        jsonRequest += "}";
+
+        RadarGeofenceGeometry geometry = new RadarCircleGeometry(new Coordinate(latitude, longitude), radius);
+        RadarGeofence radarGeofence = new RadarGeofence(null, description, tag, externalId, metadataJson, geometry);
+
+        String geofenceJsonString = gson.toJson(radarGeofence);
+
+//        String jsonRequest = "{";
+//        jsonRequest += "\"description\": \"" + description + "\",\n";
+//        jsonRequest += "\"type\": \"circle\",\n";
+//        jsonRequest += "\"coordinates\": [" + String.format("%.9f", longitude) + ", " + String.format("%.9f", latitude) + "],\n";
+//        jsonRequest += "\"radius\": " + radius + ",\n";
+//        jsonRequest += "\"tag\": \"" + tag + "\",\n";
+//        jsonRequest += "\"externalId\": \"" + externalId + "\",\n";
+//        if (metadata != null && metadata.size() > 0) {
+//            jsonRequest += "\"metadata\": {";
+//
+//            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+//                jsonRequest += "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\",\n";
+//            }
+//            jsonRequest = jsonRequest.substring(0, jsonRequest.length() - 2);
+//            jsonRequest += "}\n";
+//        }
+//        jsonRequest += "}";
 
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody requestBody = RequestBody.create(JSON, jsonRequest);
+        RequestBody requestBody = RequestBody.create(JSON, geofenceJsonString);
 
         Request request = new Request.Builder()
                 .url(GeofencesURL)
@@ -100,8 +120,7 @@ public class RadarAPI {
 
         String startGeofence = RadarUtils.getStartGeofence(responseString);
         if (!startGeofence.isEmpty()) {
-            RadarGeofence radarGeofence = RadarUtils.parseGeofenceFromJSONString(startGeofence);
-            return radarGeofence;
+            return gson.fromJson(startGeofence, RadarGeofence.class);
         }
         /*
         {
