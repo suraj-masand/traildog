@@ -71,7 +71,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             finish();
-                            startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+                            startActivity(new Intent(getApplicationContext(), AssembleActivity.class));
                         }
                     }
                 });
