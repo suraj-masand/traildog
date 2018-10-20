@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             if (firebaseAuth.getCurrentUser() != null) {
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+                                startActivity(new Intent(getApplicationContext(), AssembleActivity.class));
                             }
                         } else {
                             Toast.makeText(RegisterActivity.this, "Could not register user, try again", Toast.LENGTH_SHORT).show();
