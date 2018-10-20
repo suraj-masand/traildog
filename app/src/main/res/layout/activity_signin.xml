@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationActivity">
+    tools:context=".SigninActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -12,7 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp">
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -31,17 +34,24 @@
             android:inputType="textPassword" />
 
         <Button
+            android:id="@+id/buttonSignin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Login" />
+
+        <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Register User" />
+            android:text="Register"/>
 
         <TextView
-            android:id="@+id/textViewSignin"
+            android:id="@+id/textViewLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already Registered. Sign in here"
+            android:text="If you do not have an account. Please register to continue"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -55,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

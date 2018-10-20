@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.traildog.app">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -18,6 +17,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,16 +35,19 @@
         </receiver>
         <activity
             android:name=".HomeScreen"
+            android:exported="true"
             android:label="@string/title_activity_home_screen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Wallet"
+            android:label="@string/title_activity_wallet"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true"/>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity
-            android:name=".RegistrationActivity"
-            android:exported="true"></activity>
-       <meta-data
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDToQ9uPVkj6A_-9NaAWwiMJ59yYH_UOBI"/>
         <meta-data
@@ -53,6 +56,20 @@
         <meta-data
             android:name="radar-api-live-key"
             android:value="prj_live_pk_f6b51f4172bc019d99bd6b8f0f9876b2ee6df27a"/>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SigninActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
