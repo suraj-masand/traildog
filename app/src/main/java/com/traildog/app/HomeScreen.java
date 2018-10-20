@@ -41,7 +41,7 @@ public class HomeScreen extends AppCompatActivity {
                 "Two free side dishes of your choice " +
                         "with the purchase of an extra-large pizza",
                 "drawable/italianfood.png");
-        lampLightTreat = new Treats(TREATTYPE.EVENT, 5, "", "drawable/lamplight.png");
+        lampLightTreat = new Treats(TREATTYPE.EVENT, 5, "Contact Us: (123) 456 7890", "drawable/lamplight.png");
         popcornTreat = new Treats(TREATTYPE.COUPON, 7, "One free popcorn refill", "drawable/popcorn.png");
 
 
@@ -58,7 +58,7 @@ public class HomeScreen extends AppCompatActivity {
 
         //creates hockey treat at klaus id = 3 TREATTYPE = EVENT
         hockeyTreat = new Treats(TREATTYPE.EVENT, 3,
-                "",  "drawable/hockey.png",
+                "April 13th",  "drawable/hockey.png",
                 33.7773, 84.3962, 200);
 
         //creates music treat at library id = 6 TREATTYPE = EVENT
