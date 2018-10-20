@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -77,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             }
                         } else {
                             Toast.makeText(RegisterActivity.this, "Could not register user, try again", Toast.LENGTH_SHORT).show();
-                            FirebaseAuthException e = (FirebaseAuthException )task.getException();
+                            FirebaseException e = (FirebaseException) task.getException();
                             Log.e("RegistrationActivity", "Failed Registration", e);
                         }
                     }
