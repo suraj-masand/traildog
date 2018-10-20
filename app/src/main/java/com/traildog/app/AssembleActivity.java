@@ -19,7 +19,7 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_assemble);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder,  new MapFragment());
