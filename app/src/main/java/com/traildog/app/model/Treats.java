@@ -1,7 +1,5 @@
 package com.traildog.app.model;
 
-import android.widget.ImageView;
-
 public class Treats {
 
     private String value;
@@ -10,11 +8,8 @@ public class Treats {
     private String imageFilePath;
     private double Latitude;
     private double Longitude;
-<<<<<<< HEAD
     private TreatType type;
-=======
-    private TREATTYPE type;
->>>>>>> master
+
 
     /**
      * constructor for dropin treats
@@ -26,11 +21,7 @@ public class Treats {
      * @param Longitude
      * @param radius
      */
-<<<<<<< HEAD
     public Treats(TreatType type, int id, String value,
-=======
-    public Treats(TREATTYPE type, int id, String value,
->>>>>>> master
                   String imageFilePath, double Latitude,
                   double Longitude, int radius) {
         this.type = type;
@@ -49,11 +40,7 @@ public class Treats {
      * @param value
      * @param imageFilePath
      */
-<<<<<<< HEAD
     public Treats(TreatType type, int id, String value,
-=======
-    public Treats(TREATTYPE type, int id, String value,
->>>>>>> master
                   String imageFilePath) {
         this.type = type;
         this.id = id;
@@ -87,19 +74,11 @@ public class Treats {
         Longitude = longitude;
     }
 
-<<<<<<< HEAD
     public TreatType getType() {
         return type;
     }
 
     public void setType(TreatType type) {
-=======
-    public TREATTYPE getType() {
-        return type;
-    }
-
-    public void setType(TREATTYPE type) {
->>>>>>> master
         this.type = type;
     }
 
