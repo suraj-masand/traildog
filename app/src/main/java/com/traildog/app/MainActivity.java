@@ -17,15 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import io.radar.sdk.Radar;
-import io.radar.sdk.Radar.RadarCallback;
-import io.radar.sdk.model.RadarEvent;
-import io.radar.sdk.model.RadarGeofence;
-import io.radar.sdk.model.RadarUser;
-
-import io.radar.sdk.Radar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.traildog.model.RadarUtils;
 
 
 public class MainActivity extends AppCompatActivity {
