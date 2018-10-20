@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "424846430844",
+    "firebase_url": "https://myfirebaseauthapp-292ce.firebaseio.com",
+    "project_id": "myfirebaseauthapp-292ce",
+    "storage_bucket": "myfirebaseauthapp-292ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424846430844:android:7b2331483f6edeb8",
+        "android_client_info": {
+          "package_name": "com.traildog.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424846430844-9r0b6qbqtorv3cvggjehpd2vtrol8cvh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.traildog.app",
+            "certificate_hash": "77bda24751653e8b0849ec9ebac06e8f69e56c7e"
+          }
+        },
+        {
+          "client_id": "424846430844-e53uonjfem6dsoq4unc04gg97jd8edu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUTf6Q8Yq0my5sr4gyKe9U_yjRR4sJiFA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424846430844-e53uonjfem6dsoq4unc04gg97jd8edu3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
