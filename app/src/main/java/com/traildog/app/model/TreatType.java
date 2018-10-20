@@ -1,5 +1,5 @@
 package com.traildog.app.model;
 
-public enum TREATTYPE {
+public enum TreatType {
     COUPON, MESSAGE, MONEY, EVENT
         }
