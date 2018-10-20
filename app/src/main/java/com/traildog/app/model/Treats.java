@@ -51,11 +51,11 @@ public class Treats {
     }
 
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
