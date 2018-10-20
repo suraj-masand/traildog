@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.traildog.app.model.TREATTYPE;
+import com.traildog.app.model.TreatType;
 import com.traildog.app.model.Treats;
 
 
@@ -46,36 +46,36 @@ public class HomeScreen extends FragmentActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_assemble);
         firebaseAuth = FirebaseAuth.getInstance();
 
         //NOTE: these items are already in wallet
-        italianFoodTreat = new Treats(TREATTYPE.COUPON, 4,
+        italianFoodTreat = new Treats(TreatType.COUPON, 4,
                 "Two free side dishes of your choice " +
                         "with the purchase of an extra-large pizza",
                 "drawable/italianfood.png");
-        lampLightTreat = new Treats(TREATTYPE.EVENT, 5, "Contact Us: (123) 456 7890", "drawable/lamplight.png");
-        popcornTreat = new Treats(TREATTYPE.COUPON, 7, "One free popcorn refill", "drawable/popcorn.png");
+        lampLightTreat = new Treats(TreatType.EVENT, 5, "Contact Us: (123) 456 7890", "drawable/lamplight.png");
+        popcornTreat = new Treats(TreatType.COUPON, 7, "One free popcorn refill", "drawable/popcorn.png");
 
 
         //NOTE: these following items are geotagged with location and longitude
-        //creates activeWear at campanile with id = 1 and TREATTYPE = COUPON
-        activeWearTreat = new Treats(TREATTYPE.COUPON, 1,
+        //creates activeWear at campanile with id = 1 and TreatType = COUPON
+        activeWearTreat = new Treats(TreatType.COUPON, 1,
                 "$10.00", "drawable/activeWear.png", 33.7743,
                 84.3982, 200);
 
-        //creates donut treat at crc id = 2 TREATTYPE = COUPON
-        donutTreat = new Treats(TREATTYPE.COUPON, 2, "50%",
+        //creates donut treat at crc id = 2 TreatType = COUPON
+        donutTreat = new Treats(TreatType.COUPON, 2, "50%",
                 "drawable/donut.png", 33.7757,
                 84.4040, 200);
 
-        //creates hockey treat at klaus id = 3 TREATTYPE = EVENT
-        hockeyTreat = new Treats(TREATTYPE.EVENT, 3,
+        //creates hockey treat at klaus id = 3 TreatType = EVENT
+        hockeyTreat = new Treats(TreatType.EVENT, 3,
                 "April 13th",  "drawable/hockey.png",
                 33.7773, 84.3962, 200);
 
-        //creates music treat at library id = 6 TREATTYPE = EVENT
-        musicTreat = new Treats(TREATTYPE.EVENT, 6,
+        //creates music treat at library id = 6 TreatType = EVENT
+        musicTreat = new Treats(TreatType.EVENT, 6,
                 "October 29th", "drawable/music.png",
                 33.7743, 84.3957, 200);
 
