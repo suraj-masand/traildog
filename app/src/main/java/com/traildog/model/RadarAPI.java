@@ -14,7 +14,7 @@ public class RadarAPI {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String GeofencesURL = "https://api.radar.io/v1/geofences/";
 
-    public static List<RadarGeofence> getGeofenceList(Map<String, Object> myMap) throws IOException {
+    public static List<RadarGeofence> getGeofenceList(Map<String, String> paramMap) throws IOException {
         // optional parameters:
         // limit (int from 1 to 1000, default 100)
         // createdBefore (datetime)
@@ -23,9 +23,20 @@ public class RadarAPI {
 
         OkHttpClient client = new OkHttpClient();
 
+        String queryParams = "";
+        for (Map.Entry<String, String> entry : paramMap.entrySet())
+        {
+            if (queryParams.isEmpty()) {
+                queryParams += "?";
+            } else {
+                queryParams += "&";
+            }
+            queryParams += entry.getKey() + "=" + entry.getValue();
+        }
 
         Request request = new Request.Builder()
-                    .url(GeofencesURL)
+                    .url(GeofencesURL + queryParams)
+                    .addHeader("Authentication", "")
                     .build();
 
         Response response = client.newCall(request).execute();

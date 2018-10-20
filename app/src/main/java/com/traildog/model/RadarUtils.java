@@ -9,9 +9,11 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -19,7 +21,7 @@ public class RadarUtils {
 
     final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    public static Map<String, Object> getGeofenceListParams(@Nullable Integer limit,
+    public static Map<String, String> getGeofenceListParams(@Nullable Integer limit,
                                                             @Nullable String createdBefore,
                                                             @Nullable String createdAfter,
                                                             @Nullable String tag) {
@@ -29,16 +31,16 @@ public class RadarUtils {
         // createdAfter (datetime)
         // tag (string)
 
-        Map<String, Object> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
 
         if (limit != null && limit > 0 && limit <= 1000) {
-            params.put("limit", limit);
+            params.put("limit", String.valueOf(limit));
         }
 
         if (createdBefore != null && !createdBefore.isEmpty()) {
             try {
-                Date createdBeforeDate = formatter.parse(createdBefore);
-                params.put("createdBefore", createdBeforeDate);
+                Date createdBeforeDate = formatter.parse(createdBefore); // validates date
+                params.put("createdBefore", createdBefore);
             } catch (ParseException e) {
                 Log.d("ParseException", "Could not parse createdBefore string");
             }
@@ -46,8 +48,8 @@ public class RadarUtils {
 
         if (createdAfter != null && !createdAfter.isEmpty()) {
             try {
-                Date createdAfterDate = formatter.parse(createdAfter);
-                params.put("createdAfter", createdAfterDate);
+                Date createdAfterDate = formatter.parse(createdAfter); // validates date
+                params.put("createdAfter", createdAfter);
             } catch (ParseException e) {
                 Log.d("ParseException", "Could not parse createdAfter string");
             }
@@ -64,8 +66,24 @@ public class RadarUtils {
         return null;
     }
 
+    public static List<RadarGeofence> parseGeofenceListFromJSON(String jsonString) {
+        List<RadarGeofence> geofenceList = new ArrayList<>();
+        try {
+            JSONArray geofenceJSONList = new JSONArray(jsonString);
+            for (int i = 0; i < geofenceJSONList.length(); i++) {
+                JSONObject geofenceJSON = geofenceJSONList.getJSONObject(i);
+                RadarGeofence geofence = parseGeofenceFromJSONString(geofenceJSON.toString());
+                geofenceList.add(geofence);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-    public static RadarGeofence parseGeofenceFromJSON(String jsonString) {
+        return geofenceList;
+    }
+
+
+    public static RadarGeofence parseGeofenceFromJSONString(String jsonString) {
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
