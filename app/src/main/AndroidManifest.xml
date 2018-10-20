@@ -22,9 +22,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".RegistrationActivity"
             android:exported="true"></activity>
-        <activity android:name=".EmailPasswordActivity"></activity>
     </application>
 
 </manifest>
