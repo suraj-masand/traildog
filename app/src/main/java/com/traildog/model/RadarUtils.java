@@ -85,14 +85,19 @@ public class RadarUtils {
 
     public static RadarGeofence parseGeofenceFromJSONString(String jsonString) {
 
+        JSONObject jsonObject = null;
         try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            RadarGeofence geofence = new RadarGeofence();
+            jsonObject = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RadarGeofence geofence = new RadarGeofence();
+        try {
             geofence.setRadarId(jsonObject.getString("_id"));
             geofence.setCreatedAt(formatter.parse(jsonObject.getString("createdAt")));
             geofence.setLive(jsonObject.getBoolean("live"));
-            geofence.setTag(jsonObject.getString("tag"));
-            geofence.setExternalId(jsonObject.getString("externalId"));
+            geofence.setTag(jsonObject.optString("tag"));
+            geofence.setExternalId(jsonObject.optString("externalId"));
             geofence.setDescription(jsonObject.optString("description", "description is empty"));
             geofence.setType(jsonObject.getString("type"));
             if (geofence.getType().equalsIgnoreCase("circle")) {
@@ -122,14 +127,45 @@ public class RadarUtils {
 
             return geofence;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
 
         return null;
     }
+
+    public static String getStartGeofenceList(String jsonString) {
+        if (jsonString.isEmpty()) {
+            return jsonString;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray geofences = jsonObject.getJSONArray("geofences");
+            return geofences.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public static String getStartGeofence(String jsonString) {
+        if (jsonString.isEmpty()) {
+            return jsonString;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONObject geofence = jsonObject.getJSONObject("geofence");
+            return geofence.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
 
         /*
 
@@ -148,8 +184,6 @@ userId (string): An optional user restriction for the geofence. If set, the geof
 enabled (boolean): If true, the geofence will generate events. If false, the geofence will not generate events. Defaults to true.
 
  */
-
-
 
 
 }

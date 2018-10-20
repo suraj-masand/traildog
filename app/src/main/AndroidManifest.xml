@@ -39,6 +39,12 @@
        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDToQ9uPVkj6A_-9NaAWwiMJ59yYH_UOBI"/>
+        <meta-data
+            android:name="radar-api-test-key"
+            android:value="prj_test_pk_f63824db52ac937bbc42f871b07bcfbda11615ec"/>
+        <meta-data
+            android:name="radar-api-live-key"
+            android:value="prj_live_pk_f6b51f4172bc019d99bd6b8f0f9876b2ee6df27a"/>
     </application>
 
 </manifest>

@@ -132,6 +132,34 @@ public class RadarGeofence {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    @Override
+    public String toString() {
+        String result = "Geofence Radar ID: " + radarId + "\n";
+        result += "Created At: " + createdAt.toString() + "\n";
+        result += "Live: " + live + "\n";
+        result += "Tag: " + tag + "\n";
+        result += "External ID: " + externalId + "\n";
+        result += "Description: " + description + "\n";
+        result += "Type: " + type + "\n";
+        result += "Radius: " + radius + "\n";
+        result += "Longitude: " + centerLongitude + "\n";
+        result += "Latitude: " + centerLatitude + "\n";
+        result += "UserId: " + userId + "\n";
+        result += "Enabled: " + enabled + "\n";
+        result += "Metadata: ";
+        if (metadata == null) {
+            result += "null\n";
+        } else {
+            result += "\n";
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                result += "\t" + entry.getKey() + ": " + entry.getValue() + "\n";
+            }
+
+        }
+
+        return result;
+    }
 }
 
 
