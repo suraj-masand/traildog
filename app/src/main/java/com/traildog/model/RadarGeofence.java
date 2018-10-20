@@ -15,6 +15,8 @@ public class RadarGeofence {
 
     private String description;
     private String type; // circle or polygon
+    private int radius; // radius of the circle in meters, between 50 and 10000
+
     private double centerLongitude;
     private double centerLatitude;
     private Map<String, String> metadata;
@@ -81,6 +83,14 @@ public class RadarGeofence {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
     public double getCenterLongitude() {
