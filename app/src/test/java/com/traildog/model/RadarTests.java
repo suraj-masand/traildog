@@ -62,7 +62,8 @@ public class RadarTests {
     @Test
     public void testGetGeofenceList() {
         try {
-            List<RadarGeofence> geofenceList = RadarAPI.getGeofenceList(testRadarKey, new HashMap<String, String>());
+            Map<String, String> params = RadarUtils.getGeofenceListParams(null, null, null, null);
+            List<RadarGeofence> geofenceList = RadarAPI.getGeofenceList(testRadarKey, params);
             for (RadarGeofence rg : geofenceList) {
                 System.out.println(rg.toString());
             }

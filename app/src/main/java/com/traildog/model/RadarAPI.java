@@ -1,29 +1,17 @@
 package com.traildog.model;
 
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.security.cert.CertificateException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.BufferedSink;
 
 public class RadarAPI {
 
@@ -41,14 +29,15 @@ public class RadarAPI {
         OkHttpClient client = new OkHttpClient();
 
         String queryParams = "";
-        for (Map.Entry<String, String> entry : paramMap.entrySet())
-        {
-            if (queryParams.isEmpty()) {
-                queryParams += "?";
-            } else {
-                queryParams += "&";
+        if (paramMap != null && paramMap.size() > 0) {
+            for (Map.Entry<String, String> entry : paramMap.entrySet()) {
+                if (queryParams.isEmpty()) {
+                    queryParams += "?";
+                } else {
+                    queryParams += "&";
+                }
+                queryParams += entry.getKey() + "=" + entry.getValue();
             }
-            queryParams += entry.getKey() + "=" + entry.getValue();
         }
 
         Request request = new Request.Builder()
