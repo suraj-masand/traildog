@@ -33,8 +33,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <activity
             android:name=".RegistrationActivity"
-            android:exported="true">
+            android:exported="true"></activity>
        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDToQ9uPVkj6A_-9NaAWwiMJ59yYH_UOBI"/>
