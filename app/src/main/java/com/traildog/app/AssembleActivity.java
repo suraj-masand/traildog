@@ -5,9 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +29,12 @@ import android.widget.Toast;
 import com.traildog.app.model.MyRecyclerViewAdapter;
 import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
+import com.traildog.model.LocationAsyncUpdate;
 
 import java.util.ArrayList;
 
 import io.radar.sdk.Radar;
+import io.radar.sdk.model.Coordinate;
 
 public class AssembleActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, NavigationView.OnNavigationItemSelectedListener{
 
@@ -42,11 +49,42 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
     MyRecyclerViewAdapter adapter;
 
     final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
+    String updatedRadarKey;
+
+    Handler h = new Handler();
+    int delay = 5*1000; //1 second=1000 milisecond, 5*1000=5seconds
+    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assemble);
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS}, 0);
+        }
+
+        String radarKey = "";
+        Context context = getApplicationContext();
+        ApplicationInfo appInfo = null;
+        try {
+            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),PackageManager.GET_META_DATA);
+            radarKey = appInfo.metaData.getString(RADAR_KEY_TYPE);
+            Radar.initialize(radarKey);
+            Radar.setUserId("demoUser"); // change to UUID for currently logged in user
+            Radar.setDescription("A demo user.");
+            Radar.startTracking();
+            MyRadarReceiver receiver = new MyRadarReceiver();
+        } catch (PackageManager.NameNotFoundException e1) {
+            e1.printStackTrace();
+        }
+
+        updatedRadarKey = radarKey;
+
+
         //treats
         //NOTE: these items are already in wallet
         italianFoodTreat = new Treats(TreatType.COUPON, 4,
@@ -199,4 +237,74 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private Coordinate useCurrentLocation() {
+        System.out.println("Called UseCurrentLocation");
+        Toast.makeText(this, "Loading Location...", Toast.LENGTH_SHORT).show();
+
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)) {
+
+            System.out.println("Does not have permission, will ask.");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+
+        }
+
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, new MyLocationListener());
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = 0;
+        double latitude = 0;
+        if (location != null) {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            System.out.println("Got the location.");
+            Log.d("LONGITUDE", "" + longitude);
+            Log.d("LATITUDE", "" + latitude);
+            return new Coordinate(latitude, longitude);
+        } else {
+            System.out.println("Location is null" + longitude + "\t" + latitude);
+        }
+
+        return new Coordinate(latitude, longitude);
+
+    }
+
+    @Override
+    protected void onResume() {
+        //start as activity become visible
+
+        h.postDelayed( runnable = new Runnable() {
+            public void run() {
+                //do something
+                Location loc = new Location("");
+                Coordinate coord = useCurrentLocation();
+
+                LocationAsyncUpdate lau = new LocationAsyncUpdate(coord, updatedRadarKey);
+                lau.execute();
+
+                h.postDelayed(runnable, delay);
+            }
+        }, delay);
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        h.removeCallbacks(runnable); //stop when activity not visible
+        super.onPause();
+    }
+
 }
