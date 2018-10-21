@@ -12,4 +12,5 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_wallet">Wallet</string>
     <string name="title_activity_full_view_map">Map</string>
+    <string name="title_activity_small_treat_list">SmallTreatList</string>
 </resources>

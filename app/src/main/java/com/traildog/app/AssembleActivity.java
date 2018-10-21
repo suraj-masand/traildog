@@ -1,6 +1,7 @@
 package com.traildog.app;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -12,16 +13,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.traildog.app.model.MyRecyclerViewAdapter;
 import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
 
+import java.util.ArrayList;
+
 import io.radar.sdk.Radar;
 
-public class AssembleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class AssembleActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, NavigationView.OnNavigationItemSelectedListener{
 
     private Treats activeWearTreat;
     private Treats donutTreat;
@@ -30,6 +38,8 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
     private Treats lampLightTreat;
     private Treats musicTreat;
     private Treats popcornTreat;
+
+    MyRecyclerViewAdapter adapter;
 
     final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
 
@@ -49,26 +59,39 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
 
         //NOTE: these following items are geotagged with location and longitude
         //creates activeWear at campanile with id = 1 and TREATTYPE = COUPON
-        activeWearTreat = new Treats(TreatType.COUPON, 1,
+        activeWearTreat = new Treats("Active Street Wear", TreatType.COUPON, 1,
                 "$10.00", "drawable/activeWear.png", 33.7743,
                 84.3982, 200);
 
         //creates donut treat at crc id = 2 TREATTYPE = COUPON
-        donutTreat = new Treats(TreatType.COUPON, 2, "50%",
+        donutTreat = new Treats("Donut", TreatType.COUPON, 2, "50%",
                 "drawable/donut.png", 33.7757,
                 84.4040, 200);
 
         //creates hockey treat at klaus id = 3 TREATTYPE = EVENT
-        hockeyTreat = new Treats(TreatType.EVENT, 3,
+        hockeyTreat = new Treats("Hockey Event", TreatType.EVENT, 3,
                 "April 13th",  "drawable/hockey.png",
                 33.7773, 84.3962, 200);
 
         //creates music treat at library id = 6 TREATTYPE = EVENT
-        musicTreat = new Treats(TreatType.EVENT, 6,
+        musicTreat = new Treats("Music Festival" ,TreatType.EVENT, 6,
                 "October 29th", "drawable/music.png",
                 33.7743, 84.3957, 200);
 
         //end treats
+
+        ArrayList<Treats> treatList = new ArrayList<>();
+        treatList.add(activeWearTreat);
+        treatList.add(donutTreat);
+        treatList.add(hockeyTreat);
+        treatList.add(musicTreat);
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.rvTreats);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MyRecyclerViewAdapter(this, treatList);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -120,6 +143,10 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
         }
 
 
+    }
+
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override

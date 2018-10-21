@@ -9,6 +9,7 @@ public class Treats {
     private double Latitude;
     private double Longitude;
     private TreatType type;
+    private String name;
 
 
     /**
@@ -21,9 +22,10 @@ public class Treats {
      * @param Longitude
      * @param radius
      */
-    public Treats(TreatType type, int id, String value,
+    public Treats(String name, TreatType type, int id, String value,
                   String imageFilePath, double Latitude,
                   double Longitude, int radius) {
+        this.name = name;
         this.type = type;
         this.id = id;
         this.value = value;
@@ -104,5 +106,10 @@ public class Treats {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

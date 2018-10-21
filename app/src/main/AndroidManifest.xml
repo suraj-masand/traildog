@@ -65,10 +65,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AssembleActivity"></activity>
+        <activity android:name=".AssembleActivity" />
         <activity
             android:name=".model.FullViewMap"
-            android:label="@string/title_activity_full_view_map"></activity>
+            android:label="@string/title_activity_full_view_map" />
+        <activity
+            android:name=".model.SmallTreatList"
+            android:label="@string/title_activity_small_treat_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
