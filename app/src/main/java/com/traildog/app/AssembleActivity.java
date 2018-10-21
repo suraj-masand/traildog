@@ -1,6 +1,11 @@
 package com.traildog.app;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +19,8 @@ import android.view.MenuItem;
 import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
 
+import io.radar.sdk.Radar;
+
 public class AssembleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Treats activeWearTreat;
@@ -23,6 +30,8 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
     private Treats lampLightTreat;
     private Treats musicTreat;
     private Treats popcornTreat;
+
+    final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +85,41 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        String radarKey = null;
+        Context context = getApplicationContext();
+        ApplicationInfo appInfo = null;
+        try {
+            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),PackageManager.GET_META_DATA);
+            radarKey = appInfo.metaData.getString(RADAR_KEY_TYPE);
+            Radar.initialize(radarKey);
+            Radar.setUserId("demoUser"); // change to UUID for currently logged in user
+            Radar.setDescription("A demo user.");
+
+//            if (Build.VERSION.SDK_INT >= 23) {
+            int requestCode = 0;
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, requestCode);
+//            }
+
+//            Radar.trackOnce(new RadarCallback() {
+//                @Override
+//                public void onComplete(Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
+//                    // do something with status, location, events, user
+//                    if (status == Radar.RadarStatus.SUCCESS) {
+//                        if (events.length > 0) {
+//                            for (RadarEvent e : events) {
+//                                String result = RadarUtils.handleRadarEvent(e);
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+            Radar.startTracking();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
