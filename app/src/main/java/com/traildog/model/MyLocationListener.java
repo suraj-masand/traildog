@@ -4,6 +4,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.traildog.app.AssembleActivity;
+
 public class MyLocationListener implements LocationListener {
 
     private static double latitude = 0.0;
@@ -14,6 +20,7 @@ public class MyLocationListener implements LocationListener {
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        System.out.println("Location changed to : " + latitude + " , " + longitude);
     }
 
     @Override

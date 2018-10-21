@@ -26,6 +26,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.traildog.app.model.MyRecyclerViewAdapter;
 import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
@@ -51,10 +55,9 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
     final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
     String updatedRadarKey;
+//    MapView myMap = null;
+    MapFragment mapFragment;
 
-    Handler h = new Handler();
-    int delay = 5*1000; //1 second=1000 milisecond, 5*1000=5seconds
-    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,8 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS}, 0);
         }
+
+        useCurrentLocation(); // just to start the listener? Maybe?
 
         String radarKey = "";
         Context context = getApplicationContext();
@@ -136,9 +141,12 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         //setSupportActionBar(toolbar);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder,  new MapFragment());
+        mapFragment = new MapFragment(this);
+//        myMap = mapFragment.mMapView;
+        ft.replace(R.id.fragment_placeholder,  mapFragment);
         ft.commit();
 
+//        markCurrentLocation();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -147,6 +155,14 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
 
 //        String radarKey = null;
 //        Context context = getApplicationContext();
@@ -239,7 +255,7 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         return true;
     }
 
-    private Coordinate useCurrentLocation() {
+    private LatLng useCurrentLocation() {
         System.out.println("Called UseCurrentLocation");
         Toast.makeText(this, "Loading Location...", Toast.LENGTH_SHORT).show();
 
@@ -273,39 +289,32 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
             System.out.println("Got the location.");
             Log.d("LONGITUDE", "" + longitude);
             Log.d("LATITUDE", "" + latitude);
-            return new Coordinate(latitude, longitude);
+            return new LatLng(latitude, longitude);
         } else {
             System.out.println("Location is null" + longitude + "\t" + latitude);
         }
 
-        return new Coordinate(latitude, longitude);
+        return new LatLng(latitude, longitude);
 
     }
 
-    @Override
-    protected void onResume() {
-        //start as activity become visible
 
-        h.postDelayed( runnable = new Runnable() {
-            public void run() {
-                //do something
-                Location loc = new Location("");
-                Coordinate coord = useCurrentLocation();
+    public void markCurrentLocation() {
+//        MapView myMap = null;
+//        while (myMap == null) {
+//            myMap = mapFragment.mMapView;
+//        }
 
-                LocationAsyncUpdate lau = new LocationAsyncUpdate(coord, updatedRadarKey);
-                lau.execute();
+        GoogleMap googleMap = null;
+        while (googleMap == null) {
+            googleMap = mapFragment.getGoogleMap();
+        }
 
-                h.postDelayed(runnable, delay);
-            }
-        }, delay);
+        LatLng latLng = useCurrentLocation();
 
-        super.onResume();
+        LocationAsyncUpdate lau = new LocationAsyncUpdate(latLng, googleMap);
+        lau.execute();
     }
 
-    @Override
-    protected void onPause() {
-        h.removeCallbacks(runnable); //stop when activity not visible
-        super.onPause();
-    }
 
 }
