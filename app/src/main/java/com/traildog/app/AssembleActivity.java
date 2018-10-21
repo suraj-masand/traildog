@@ -3,6 +3,7 @@ package com.traildog.app;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -247,7 +248,7 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
-
+            startActivity(new Intent(getApplicationContext(), SigninActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
