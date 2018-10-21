@@ -1,6 +1,9 @@
 package com.traildog.app.model;
 
-public class Treats {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Treats implements Parcelable {
 
     private String value;
     private int id;
@@ -104,5 +107,70 @@ public class Treats {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    /* everything below here is for implementing Parcelable */
+
+    // 99.9% of the time you can just ignore this
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // write your object's data to the passed-in Parcel
+
+    /**
+     *     private String value;
+     *     private int id;
+     *     private int radius;
+     *     private String imageFilePath;
+     *     private double Latitude;
+     *     private double Longitude;
+     *     private TreatType type;
+     * @param out
+     * @param flags
+     */
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(value);
+        out.writeInt(id);
+        out.writeInt(radius);
+        out.writeString(imageFilePath);
+        out.writeDouble(Latitude);
+        out.writeDouble(Longitude);
+        out.writeString(this.type.getText());
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<Treats> CREATOR = new Parcelable.Creator<Treats>() {
+        public Treats createFromParcel(Parcel in) {
+            return new Treats(in);
+        }
+
+        public Treats[] newArray(int size) {
+            return new Treats[size];
+        }
+    };
+
+    // example constructor that takes a Parcel and gives you an object populated with it's values
+    /**
+     *     private String value;
+     *     private int id;
+     *     private int radius;
+     *     private String imageFilePath;
+     *     private double Latitude;
+     *     private double Longitude;
+     *     private TreatType type;
+     * @param in
+     */
+    private Treats(Parcel in) {
+        value = in.readString();
+        id = in.readInt();
+        radius = in.readInt();
+        imageFilePath = in.readString();
+        Latitude = in.readDouble();
+        Longitude = in.readDouble();
+        type.setText(in.readString());
     }
 }

@@ -1,5 +1,6 @@
 package com.traildog.app;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -33,33 +34,41 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
         italianFoodTreat = new Treats(TreatType.COUPON, 4,
                 "Two free side dishes of your choice " +
                         "with the purchase of an extra-large pizza",
-                "drawable/italianfood.png");
-        lampLightTreat = new Treats(TreatType.EVENT, 5, "Contact Us: (123) 456 7890", "drawable/lamplight.png");
-        popcornTreat = new Treats(TreatType.COUPON, 7, "One free popcorn refill", "drawable/popcorn.png");
+                "R.drawable.italianfood");
+        lampLightTreat = new Treats(TreatType.EVENT, 5, "Contact Us: (123) 456 7890", "R.drawable.lamplight");
+        popcornTreat = new Treats(TreatType.COUPON, 7, "One free popcorn refill", "R.drawable.popcorn");
+        //sends to wallet
+        Intent intentWallet = new Intent(this, Wallet.class);
+        intentWallet.putExtra("italianFoodTreat", italianFoodTreat);
+        intentWallet.putExtra("lampLightTreat", lampLightTreat);
+        intentWallet.putExtra("popcornTreat", popcornTreat);
 
+
+        Intent intentMapFragment = new Intent(this, MapFragment.class);
 
         //NOTE: these following items are geotagged with location and longitude
         //creates activeWear at campanile with id = 1 and TREATTYPE = COUPON
         activeWearTreat = new Treats(TreatType.COUPON, 1,
-                "$10.00", "drawable/activeWear.png", 33.7743,
+                "$10.00", "R.drawable.activeWear", 33.7743,
                 84.3982, 200);
 
         //creates donut treat at crc id = 2 TREATTYPE = COUPON
         donutTreat = new Treats(TreatType.COUPON, 2, "50%",
-                "drawable/donut.png", 33.7757,
+                "R.drawable.donut", 33.7757,
                 84.4040, 200);
 
         //creates hockey treat at klaus id = 3 TREATTYPE = EVENT
         hockeyTreat = new Treats(TreatType.EVENT, 3,
-                "April 13th",  "drawable/hockey.png",
+                "April 13th",  "R.drawable.hockey",
                 33.7773, 84.3962, 200);
 
         //creates music treat at library id = 6 TREATTYPE = EVENT
         musicTreat = new Treats(TreatType.EVENT, 6,
-                "October 29th", "drawable/music.png",
+                "October 29th", "R.drawable.music",
                 33.7743, 84.3957, 200);
 
         //end treats
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
