@@ -178,6 +178,22 @@ public class RadarUtils {
         return "";
     }
 
+    public static String getStartUser(String jsonString) {
+        if (jsonString.isEmpty()) {
+            return jsonString;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONObject user = jsonObject.getJSONObject("user");
+            return user.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
 
         /*
 

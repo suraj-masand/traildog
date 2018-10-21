@@ -1,12 +1,15 @@
 package com.traildog.model;
 
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.radar.sdk.model.RadarUser;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,6 +20,8 @@ import io.radar.sdk.model.RadarGeofence;
 import io.radar.sdk.model.RadarGeofenceGeometry;
 import io.radar.sdk.model.RadarCircleGeometry;
 import io.radar.sdk.model.Coordinate;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -26,6 +31,8 @@ public class RadarAPI {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String GeofencesURL = "https://api.radar.io/v1/geofences/";
+    public static final String UserURL = "https://api.radar.io/v1/users/12345";
+
     public static final String RADAR_KEY_TYPE = "radar-api-test-key"; // either "radar-api-test-key" or "radar-api-live-key"
 
     public static List<RadarGeofence> getGeofenceList(String radarKey, Map<String, String> paramMap) throws IOException, PackageManager.NameNotFoundException {
@@ -67,6 +74,45 @@ public class RadarAPI {
         }
 
         return null;
+    }
+
+    public static RadarUser updateUserLocation(String radarKey, String userId, String description, Location loc) throws IOException {
+        Gson gson = new Gson();
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("description", description);
+        params.put("longitude", String.valueOf(loc.getLongitude()));
+        params.put("latitude", String.valueOf(loc.getLatitude()));
+        params.put("accuracy", String.valueOf(loc.getAccuracy()));
+        String userJson = gson.toJson(params);
+
+//        RadarUser user = new RadarUser("5bcbd656591844002ac7a9a3", userId, null, description, null,loc, null, null, null, false, false);
+//        String userJson = gson.toJson(user);
+        System.out.println(userJson);
+
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody requestBody = RequestBody.create(JSON, userJson);
+
+        Request request = new Request.Builder()
+                .url(UserURL)
+                .header("Authorization", radarKey)
+                .addHeader("Content-Type", "application/json")
+                .put(requestBody)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseString = response.body().string();
+        System.out.println(responseString);
+
+        String startUser = RadarUtils.getStartUser(responseString);
+        if (!startUser.isEmpty()) {
+            System.out.println(startUser);
+            return gson.fromJson(startUser, RadarUser.class);
+        }
+
+        return null;
+
     }
 
     public static RadarGeofence createCircularGeofence(String radarKey, double latitude, double longitude, int radius,
