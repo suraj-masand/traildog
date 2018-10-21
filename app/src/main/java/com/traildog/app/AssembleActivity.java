@@ -30,6 +30,7 @@ import com.traildog.app.model.MyRecyclerViewAdapter;
 import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
 import com.traildog.model.LocationAsyncUpdate;
+import com.traildog.model.MyLocationListener;
 
 import java.util.ArrayList;
 
@@ -147,38 +148,38 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String radarKey = null;
-        Context context = getApplicationContext();
-        ApplicationInfo appInfo = null;
-        try {
-            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),PackageManager.GET_META_DATA);
-            radarKey = appInfo.metaData.getString(RADAR_KEY_TYPE);
-            Radar.initialize(radarKey);
-            Radar.setUserId("demoUser"); // change to UUID for currently logged in user
-            Radar.setDescription("A demo user.");
-
-//            if (Build.VERSION.SDK_INT >= 23) {
-            int requestCode = 0;
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, requestCode);
-//            }
-
-//            Radar.trackOnce(new RadarCallback() {
-//                @Override
-//                public void onComplete(Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
-//                    // do something with status, location, events, user
-//                    if (status == Radar.RadarStatus.SUCCESS) {
-//                        if (events.length > 0) {
-//                            for (RadarEvent e : events) {
-//                                String result = RadarUtils.handleRadarEvent(e);
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-            Radar.startTracking();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+//        String radarKey = null;
+//        Context context = getApplicationContext();
+//        ApplicationInfo appInfo = null;
+//        try {
+//            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),PackageManager.GET_META_DATA);
+//            radarKey = appInfo.metaData.getString(RADAR_KEY_TYPE);
+//            Radar.initialize(radarKey);
+//            Radar.setUserId("demoUser"); // change to UUID for currently logged in user
+//            Radar.setDescription("A demo user.");
+//
+////            if (Build.VERSION.SDK_INT >= 23) {
+//            int requestCode = 0;
+//            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, requestCode);
+////            }
+//
+////            Radar.trackOnce(new RadarCallback() {
+////                @Override
+////                public void onComplete(Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
+////                    // do something with status, location, events, user
+////                    if (status == Radar.RadarStatus.SUCCESS) {
+////                        if (events.length > 0) {
+////                            for (RadarEvent e : events) {
+////                                String result = RadarUtils.handleRadarEvent(e);
+////                            }
+////                        }
+////                    }
+////                }
+////            });
+//            Radar.startTracking();
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
 
     }
