@@ -6,7 +6,14 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        map:uiCompass="true"
+        map:zOrderOnTop="true"
+        map:uiZoomGestures="false"
+        map:uiScrollGestures="false"
+        map:uiRotateGestures="false"
+        map:uiTiltGestures="false"/>
 
 </FrameLayout>

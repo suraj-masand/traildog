@@ -1,13 +1,18 @@
 package com.traildog.app;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,11 +38,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflate and return the layout
+        GoogleMapOptions options = new GoogleMapOptions();
+        options.rotateGesturesEnabled(false);
+        options.zoomGesturesEnabled(false);
+        options.tiltGesturesEnabled(false);
+        options.scrollGesturesEnabled(false);
         View v = inflater.inflate(R.layout.fragment_map, container,
                 false);
         mMapView = v.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume();// needed to get the map to display immediately
         mMapView.getMapAsync(this);
         try {

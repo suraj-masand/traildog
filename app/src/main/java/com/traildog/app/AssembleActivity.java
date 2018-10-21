@@ -13,8 +13,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.View;
 
 import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
@@ -30,6 +34,12 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
     private Treats lampLightTreat;
     private Treats musicTreat;
     private Treats popcornTreat;
+
+    private float mPrimStartTouchEventX = -1;
+    private float mPrimStartTouchEventY = -1;
+    private float mSecStartTouchEventX = -1;
+    private float mSecStartTouchEventY = -1;
+    private float mPrimSecStartTouchDistance = 0;
 
     final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
 
@@ -72,10 +82,10 @@ public class AssembleActivity extends AppCompatActivity implements NavigationVie
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder,  new MapFragment());
         ft.commit();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
