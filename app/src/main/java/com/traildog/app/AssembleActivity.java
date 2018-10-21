@@ -100,9 +100,9 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
         //NOTE: these following items are geotagged with location and longitude
         //creates activeWear at campanile with id = 1 and TREATTYPE = COUPON
-        activeWearTreat = new Treats("Active Street Wear", TreatType.COUPON, 1,
-                "$10.00", "drawable/activeWear.png", 33.7743,
-                -84.3982, 50);
+        activeWearTreat = new Treats("Italian Food", TreatType.COUPON, 1,
+                "$10.00", "drawable/italianfood.png", 33.7743,
+                -84.3982, 70);
 
         //creates donut treat at crc id = 2 TREATTYPE = COUPON
         donutTreat = new Treats("Donut", TreatType.COUPON, 2, "50%",
@@ -112,7 +112,7 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         //creates hockey treat at klaus id = 3 TREATTYPE = EVENT
         hockeyTreat = new Treats("Hockey Event", TreatType.EVENT, 3,
                 "April 13th",  "drawable/hockey.png",
-                33.7773, -84.3962, 50);
+                33.7773, -84.3962, 30);
 
         //creates music treat at library id = 6 TREATTYPE = EVENT
         musicTreat = new Treats("Music Festival" ,TreatType.EVENT, 6,

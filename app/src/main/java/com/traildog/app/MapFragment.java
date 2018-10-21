@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -237,7 +239,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle("You got a Treat!");
         alertDialog.setMessage(treat.toString());
-//        alertDialog.setView(new ImageView());
+        ImageView pic = new ImageView(activity.getApplicationContext());
+        String imageName = treat.getImageFilePath().split("/")[1];
+        int imageId = 0;
+        switch (imageName) {
+            case "donut.png":
+                imageId = R.drawable.donut;
+                break;
+            case "italianfood.png":
+                imageId = R.drawable.italianfood;
+                break;
+            case "hockey.png":
+                imageId = R.drawable.hockey;
+                break;
+            case "music.png":
+                imageId = R.drawable.music;
+                break;
+            default:
+                imageId = R.drawable.popcorn;
+                break;
+        }
+        pic.setImageResource(imageId);
+        pic.setAdjustViewBounds(true);
+        pic.setMaxHeight(800);
+//        pic.setMaxWidth(600);
+        alertDialog.setView(pic);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
