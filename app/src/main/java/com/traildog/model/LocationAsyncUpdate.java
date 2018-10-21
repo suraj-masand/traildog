@@ -1,8 +1,6 @@
 package com.traildog.model;
 
-import android.location.Location;
 import android.os.AsyncTask;
-import android.os.LocaleList;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,10 +9,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-
-import io.radar.sdk.model.Coordinate;
-import io.radar.sdk.model.RadarUser;
 
 public class LocationAsyncUpdate extends AsyncTask<Void, Void, Void> {
 
