@@ -1,16 +1,15 @@
 package com.traildog.app;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
@@ -19,7 +18,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,20 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 import com.traildog.app.model.MyRecyclerViewAdapter;
-import com.traildog.app.model.Treats;
 import com.traildog.app.model.TreatType;
-import com.traildog.model.LocationAsyncUpdate;
+import com.traildog.app.model.Treats;
 import com.traildog.model.MyLocationListener;
 
 import java.util.ArrayList;
-
-import io.radar.sdk.Radar;
-import io.radar.sdk.model.Coordinate;
+import java.util.List;
 
 public class AssembleActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, NavigationView.OnNavigationItemSelectedListener{
 
@@ -56,10 +49,13 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
     MyRecyclerViewAdapter adapter;
 
-    final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
-    String updatedRadarKey;
+//    final String RADAR_KEY_TYPE = "radar-api-test-key"; // can be radar-api-test-key or radar-api-live-key
+//    String updatedRadarKey;
 //    MapView myMap = null;
     MapFragment mapFragment;
+//    private GeofencingClient mGeofencingClient;
+    private List<Geofence> mGeofenceList;
+//    private PendingIntent mGeofencePendingIntent;
 
 
     @Override
@@ -75,23 +71,24 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         }
 
         useCurrentLocation(); // just to start the listener? Maybe?
-
-        String radarKey = "";
-        Context context = getApplicationContext();
-        ApplicationInfo appInfo = null;
-        try {
-            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),PackageManager.GET_META_DATA);
-            radarKey = appInfo.metaData.getString(RADAR_KEY_TYPE);
-            Radar.initialize(radarKey);
-            Radar.setUserId("demoUser"); // change to UUID for currently logged in user
-            Radar.setDescription("A demo user.");
-            Radar.startTracking();
-            MyRadarReceiver receiver = new MyRadarReceiver();
-        } catch (PackageManager.NameNotFoundException e1) {
-            e1.printStackTrace();
-        }
-
-        updatedRadarKey = radarKey;
+//        mGeofencingClient = LocationServices.getGeofencingClient(this);
+//
+//        String radarKey = "";
+//        Context context = getApplicationContext();
+//        ApplicationInfo appInfo = null;
+//        try {
+//            appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),PackageManager.GET_META_DATA);
+//            radarKey = appInfo.metaData.getString(RADAR_KEY_TYPE);
+//            Radar.initialize(radarKey);
+//            Radar.setUserId("demoUser"); // change to UUID for currently logged in user
+//            Radar.setDescription("A demo user.");
+//            Radar.startTracking();
+//            MyRadarReceiver receiver = new MyRadarReceiver();
+//        } catch (PackageManager.NameNotFoundException e1) {
+//            e1.printStackTrace();
+//        }
+//
+//        updatedRadarKey = radarKey;
 
 
         //treats
@@ -106,24 +103,24 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
         //NOTE: these following items are geotagged with location and longitude
         //creates activeWear at campanile with id = 1 and TREATTYPE = COUPON
-        activeWearTreat = new Treats("Active Street Wear", TreatType.COUPON, 1,
-                "$10.00", "drawable/activeWear.png", 33.7743,
-                84.3982, 200);
+        activeWearTreat = new Treats("Italian Food", TreatType.COUPON, 1,
+                "$10.00", "drawable/italianfood.png", 33.7743,
+                -84.3982, 70);
 
         //creates donut treat at crc id = 2 TREATTYPE = COUPON
         donutTreat = new Treats("Donut", TreatType.COUPON, 2, "50%",
                 "drawable/donut.png", 33.7757,
-                84.4040, 200);
+                -84.4040, 50);
 
         //creates hockey treat at klaus id = 3 TREATTYPE = EVENT
         hockeyTreat = new Treats("Hockey Event", TreatType.EVENT, 3,
                 "April 13th",  "drawable/hockey.png",
-                33.7773, 84.3962, 200);
+                33.7773, -84.3962, 30);
 
         //creates music treat at library id = 6 TREATTYPE = EVENT
         musicTreat = new Treats("Music Festival" ,TreatType.EVENT, 6,
                 "October 29th", "drawable/music.png",
-                33.7743, 84.3957, 200);
+                33.7743, -84.3957, 50);
 
         //end treats
 
@@ -132,6 +129,9 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         treatList.add(donutTreat);
         treatList.add(hockeyTreat);
         treatList.add(musicTreat);
+
+        addGeofencesFromTreatList(treatList);
+//        System.out.println("Geofence Length = " + mGeofenceList.size());
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvTreats);
@@ -144,7 +144,7 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         //setSupportActionBar(toolbar);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        mapFragment = new MapFragment(this);
+        mapFragment = new MapFragment(this, treatList);
 //        myMap = mapFragment.mMapView;
         ft.replace(R.id.fragment_placeholder,  mapFragment);
         ft.commit();
@@ -160,12 +160,21 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
+//        mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+//                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        // Geofences added
+//                        // ...
+//                    }
+//                })
+//                .addOnFailureListener(this, new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        // Failed to add geofences
+//                        // ...
+//                    }
+//                });
 
 //        String radarKey = null;
 //        Context context = getApplicationContext();
@@ -308,22 +317,52 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
     }
 
 
-    public void markCurrentLocation() {
-//        MapView myMap = null;
-//        while (myMap == null) {
-//            myMap = mapFragment.mMapView;
+//    public void markCurrentLocation() {
+////        MapView myMap = null;
+////        while (myMap == null) {
+////            myMap = mapFragment.mMapView;
+////        }
+//
+//        GoogleMap googleMap = null;
+//        while (googleMap == null) {
+//            googleMap = mapFragment.getGoogleMap();
 //        }
+//
+//        LatLng latLng = useCurrentLocation();
+//
+//        LocationAsyncUpdate lau = new LocationAsyncUpdate(latLng, googleMap);
+//        lau.execute();
+//    }
 
-        GoogleMap googleMap = null;
-        while (googleMap == null) {
-            googleMap = mapFragment.getGoogleMap();
+    public void addGeofencesFromTreatList(List<Treats> treatsList) {
+        if (treatsList == null || treatsList.size() == 0) {
+            return;
         }
 
-        LatLng latLng = useCurrentLocation();
-
-        LocationAsyncUpdate lau = new LocationAsyncUpdate(latLng, googleMap);
-        lau.execute();
+        List<Geofence> geofenceList = new ArrayList<>();
+        for (Treats treat : treatsList) {
+            geofenceList.add(createGeofenceFromTreat(treat));
+        }
+        mGeofenceList = geofenceList;
     }
 
+    public Geofence createGeofenceFromTreat(Treats treat) {
+        Geofence geofence = new Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+
+                .setRequestId(treat.getType().toString() + "-" + treat.getId())
+
+                .setCircularRegion(
+                        treat.getLatitude(),
+                        treat.getLongitude(),
+                        (float) (treat.getRadius())
+                )
+                .setExpirationDuration(1000L * 60L * 60L * 24L)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER ) // | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build();
+
+        return geofence;
+    }
 
 }
