@@ -65,7 +65,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //                .target(new LatLng(17.385044, 78.486671)).zoom(12).build();
 //        googleMap.animateCamera(CameraUpdateFactory
 //                .newCameraPosition(cameraPosition));
-//
+
 //        // Perform any camera updates here
         return v;
     }
