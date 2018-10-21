@@ -64,10 +64,10 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
         setContentView(R.layout.activity_assemble);
 
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CONTACTS}, 0);
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
 
         useCurrentLocation(); // just to start the listener? Maybe?
