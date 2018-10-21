@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
@@ -94,12 +96,12 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
         //treats
         //NOTE: these items are already in wallet
-        italianFoodTreat = new Treats(TreatType.COUPON, 4,
+        italianFoodTreat = new Treats("Italian Food", TreatType.COUPON, 4,
                 "Two free side dishes of your choice " +
                         "with the purchase of an extra-large pizza",
                 "drawable/italianfood.png");
-        lampLightTreat = new Treats(TreatType.EVENT, 5, "Contact Us: (123) 456 7890", "drawable/lamplight.png");
-        popcornTreat = new Treats(TreatType.COUPON, 7, "One free popcorn refill", "drawable/popcorn.png");
+        lampLightTreat = new Treats("Lamplight Advenures", TreatType.EVENT, 5, "Contact Us: (123) 456 7890", "drawable/lamplight.png");
+        popcornTreat = new Treats("Free Popcorn", TreatType.COUPON, 7, "One free popcorn refill", "drawable/popcorn.png");
 
 
         //NOTE: these following items are geotagged with location and longitude
@@ -245,6 +247,12 @@ public class AssembleActivity extends AppCompatActivity implements MyRecyclerVie
 
         if (id == R.id.nav_wallet) {
             // Handle the camera action
+            Intent i = new Intent(this, Wallet.class);
+            i.putExtra("italianfood", italianFoodTreat);
+            i.putExtra("lamplight", lampLightTreat);
+            i.putExtra("popcorn", popcornTreat);
+            startActivity(i);
+
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {

@@ -1,7 +1,9 @@
 package com.traildog.app.model;
 
-public class Treats {
+import android.os.Parcel;
+import android.os.Parcelable;
 
+public class Treats implements Parcelable {
     private String value;
     private int id;
     private int radius;
@@ -22,7 +24,7 @@ public class Treats {
      * @param Longitude
      * @param radius
      */
-    public Treats(String name, TreatType type, int id, String value,
+    public Treats (String name, TreatType type, int id, String value,
                   String imageFilePath, double Latitude,
                   double Longitude, int radius) {
         this.name = name;
@@ -42,14 +44,56 @@ public class Treats {
      * @param value
      * @param imageFilePath
      */
-    public Treats(TreatType type, int id, String value,
+    public Treats(String name, TreatType type, int id, String value,
                   String imageFilePath) {
+        this.name = name;
         this.type = type;
         this.id = id;
         this.value = value;
         this.imageFilePath = imageFilePath;
 
     }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeStringArray(new String[] {name, value, imageFilePath});
+//        out.writeDoubleArray(new double[] {Latitude, Longitude});
+//        out.writeIntArray(new int[] {id, radius});
+    }
+
+    public static final Parcelable.Creator<Treats> CREATOR = new Parcelable.Creator<Treats>() {
+        public Treats createFromParcel(Parcel in) {
+            return new Treats(in);
+        }
+
+        public Treats[] newArray(int size) {
+            return new Treats[size];
+        }
+    };
+
+    private Treats(Parcel in) {
+        String strings[] =  new String[3];
+        in.readStringArray(strings);
+        this.name = strings[0];
+        this.value = strings[1];
+        this.imageFilePath = strings[2];
+//        this.value = strings[1];
+//        this.imageFilePath = strings[2];
+//        int ints[] = in.createIntArray();
+//        if (ints != null) {
+//            this.id = ints[0];
+//            this.radius = ints[1];
+//        }
+//        double doubles[] = in.createDoubleArray();
+//        if (doubles != null && doubles.length == 2) {
+//            this.Latitude = doubles[0];
+//            this.Longitude = doubles[1];
+//        }
+    }
+
 
 
     public String getValue() {
@@ -106,6 +150,10 @@ public class Treats {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
